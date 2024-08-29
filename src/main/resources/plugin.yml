@@ -1,0 +1,4 @@
+name: CannonSigns
+version: '1.0.0'
+main: me.vaan.cannonsigns.CannonSigns
+api-version: '1.21'
