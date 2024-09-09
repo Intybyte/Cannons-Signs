@@ -1,7 +1,5 @@
 package me.vaan.cannonsigns;
 
-import at.pavlov.cannons.API.CannonsAPI;
-import at.pavlov.cannons.Cannons;
 import at.pavlov.cannons.cannon.CannonManager;
 import me.vaan.cannonsigns.listeners.SignListener;
 import me.vaan.cannonsigns.utils.SignUpdateUtils;
@@ -22,11 +20,6 @@ public final class CannonSigns extends JavaPlugin {
                 SignUpdateUtils.updateCannonSigns(cannon);
             }
         }, 0, 10);
-    }
-
-    @Override
-    public void onDisable() {
-        // Plugin shutdown logic
     }
 
     public static CannonSigns getInstance() {

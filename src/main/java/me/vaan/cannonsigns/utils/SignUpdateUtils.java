@@ -4,13 +4,11 @@ import at.pavlov.cannons.cannon.Cannon;
 import at.pavlov.cannons.cannon.CannonBlocks;
 import at.pavlov.cannons.container.SimpleBlock;
 import org.bukkit.Location;
-import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.block.data.type.WallSign;
 
 public class SignUpdateUtils {
-    public static void updateSign(Block block, Cannon cannon) {
-        Sign sign = (Sign) block.getState();
+    public static void updateSign(Sign sign, Cannon cannon) {
         if (cannon.isValid()) {
             // Cannon name in the first line
             sign.setLine(0, SignGetUtils.getSignString(0, cannon));
@@ -42,7 +40,7 @@ public class SignUpdateUtils {
         for (Location signLoc : cannon.getCannonDesign().getChestsAndSigns(cannon)) {
             //check blocktype and orientation before updating sign.
             if (isCannonSign(signLoc, cannon))
-                updateSign(signLoc.getBlock(), cannon);
+                updateSign((Sign) signLoc.getBlock().getState(), cannon);
         }
     }
 
@@ -58,12 +56,7 @@ public class SignUpdateUtils {
         }
 
         for (SimpleBlock cannonblock : cannonBlocks.getChestsAndSigns()) {
-            // compare location
             if (cannonblock.toLocation(cannon.getWorldBukkit(), cannon.getOffset()).equals(loc)) {
-                //Block block = loc.getBlock();
-                //compare and data
-                //only the two lower bits of the bytes are important for the direction (delays are not interessting here)
-                //if (cannonblock.getData() == block.getData() || block.getData() == -1 || cannonblock.getData() == -1 )
                 return true;
             }
         }
