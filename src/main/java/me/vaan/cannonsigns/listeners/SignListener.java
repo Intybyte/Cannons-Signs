@@ -3,20 +3,23 @@ package me.vaan.cannonsigns.listeners;
 import at.pavlov.cannons.Cannons;
 import at.pavlov.cannons.cannon.Cannon;
 import at.pavlov.cannons.cannon.CannonManager;
+import me.vaan.cannonsigns.utils.SignUpdateUtils;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.type.WallSign;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.SignChangeEvent;
 
 public class SignListener implements Listener {
 
     private final CannonManager cannonManager;
 
-    public SignListener(Cannons plugin) {
-        this.cannonManager = plugin.getCannonManager();
+    public SignListener() {
+        this.cannonManager = Cannons.getPlugin().getCannonManager();
     }
 
     @EventHandler
@@ -52,6 +55,27 @@ public class SignListener implements Listener {
             event.setLine(1, cannon.getSignString(1));
             event.setLine(2, cannon.getSignString(2));
             event.setLine(3, cannon.getSignString(3));
+        }
+    }
+
+    @EventHandler
+    public void signPlace(BlockPlaceEvent event) {
+
+        Block block = event.getBlockPlaced();
+        Location blockLoc = block.getLocation();
+
+        // setup a new cannon
+        cannonManager.getCannon(blockLoc, event.getPlayer().getUniqueId());
+
+        // Place wallsign
+        if (block.getBlockData() instanceof WallSign wallSign) {
+            // check cannon
+            Location loc = event.getBlock().getRelative(wallSign.getFacing().getOppositeFace()).getLocation();
+            Cannon cannon = cannonManager.getCannon(loc, event.getPlayer().getUniqueId(), true);
+
+            if (cannon != null) {
+                SignUpdateUtils.updateCannonSigns(cannon);
+            }
         }
     }
 }
