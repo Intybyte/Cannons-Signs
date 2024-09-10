@@ -1,0 +1,2 @@
+# In ticks, 20 ticks = 1 second, by default every cannon is checked every 0.5s
+check-every: 10
